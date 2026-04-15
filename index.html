@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Tanılama Paneli</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
+        
+        body { 
+            background: #0a0a0a; 
+            color: #ffb7c5; 
+            font-family: 'Fira Code', monospace; 
+            overflow: hidden;
+            margin: 0;
+        }
+
+        /* CRT Monitör Efekti */
+        .crt::before {
+            content: " "; display: block; position: absolute; top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            z-index: 10; background-size: 100% 2px, 3px 100%; pointer-events: none;
+        }
+
+        .glow { text-shadow: 0 0 10px rgba(255, 183, 197, 0.5); }
+        
+        #output::-webkit-scrollbar { width: 5px; }
+        #output::-webkit-scrollbar-thumb { background: #ffb7c533; border-radius: 10px; }
+        
+        #output { scroll-behavior: smooth; }
+    </style>
+</head>
+<body class="crt p-4 md:p-12 min-h-screen flex items-center justify-center">
+    
+    <div class="w-full max-w-2xl bg-black/80 border border-pink-500/30 p-6 rounded-lg shadow-[0_0_30px_rgba(255,183,197,0.1)] backdrop-blur-md relative z-20">
+        
+        <div class="flex justify-between text-xs mb-4 border-b border-pink-500/20 pb-2 opacity-70">
+            <span>TERMINAL: ROM-OS v2.0.26</span>
+            <span id="clock"></span>
+        </div>
+
+        <div id="output" class="h-80 overflow-y-auto mb-4 space-y-2 glow text-sm md:text-base">
+            <div class="text-pink-400">[SİSTEM]: Çekirdek yükleniyor... TAMAM</div>
+            <div class="text-pink-400">[SİSTEM]: Kullanıcı 'Aleyna' oturum açtı.</div>
+            <div class="text-pink-400">[SİSTEM]: Başlamak için 'yardim' yazın.</div>
+        </div>
+
+        <div class="flex items-center border-t border-pink-500/20 pt-4">
+            <span class="mr-2 text-pink-500 font-bold">misafir@kalp:~$</span>
+            <input type="text" id="input" autofocus 
+                   class="bg-transparent outline-none flex-1 text-white border-none focus:ring-0"
+                   autocomplete="off" spellcheck="false">
+        </div>
+    </div>
+
+    <script>
+        const output = document.getElementById('output');
+        const input = document.getElementById('input');
+
+        // Saat güncelleme
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').innerText = now.toLocaleTimeString('tr-TR');
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        const COMMANDS = {
+            'yardim': "KOMUTLAR: [hakkinda, durum, ls, sudo_kiss, kahve, ping, hata_ayikla, sifre, temizle]",
+            'hakkinda': "SİSTEM SAHİBİ: Aleyna. <br>HEDEF: Sensin. <br>GÖREV: Birlikte çok mutlu olmak.",
+            'durum': "CPU: Sıcak (Seni görünce yükseliyor) | RAM: Anılarla dolu... | DUYGU: %100 Stabil.",
+            'ls': "anilar.jpg  hayaller.pdf  gizli_not.txt  gelecek_planlari.exe",
+            'ping': "Pong! <br>Gecikme: 0ms (Kalbim seninle gerçek zamanlı senkronize.)",
+            'kahve': "☕ Kahve yükleniyor... <br>[SİSTEM]: Kahve hazır! Ama seninle içilince tadı daha güzel olur.",
+            'hata_ayikla': "[DEBUG]: Hata aranıyor... <br>[OK]: Hiçbir hata bulunamadı. Sen mükemmelsin.",
+            'sifre': "ERİŞİM ENGELLENDİ. <br>İpucu: Senden 1 yaş büyük olduğum gün (3 Ekim 2006).",
+            'sudo_kiss': '<div class="space-y-4 py-2 text-center"><span class="text-pink-500 font-bold">[ADMIN]: Yetki verildi. Öpücük gönderiliyor...</span><div class="text-6xl animate-bounce">💖</div><div class="text-xs italic opacity-70">Hata: Fiziksel yakınlık algılanamadı. Lütfen yüz yüze tekrar deneyin.</div></div>'
+        };
+
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const val = input.value.toLowerCase().trim();
+                
+                const userLine = document.createElement('div');
+                userLine.innerHTML = `<span class="text-white font-bold">> ${input.value}</span>`;
+                output.appendChild(userLine);
+
+                if (val === 'temizle') {
+                    output.innerHTML = '';
+                } else if (val === '') {
+                    // Boş girişi yoksay
+                } else {
+                    const res = document.createElement('div');
+                    res.className = "pl-2 border-l-2 border-pink-500/20 my-2";
+                    res.innerHTML = COMMANDS[val] || "Komut bulunamadı: " + val + ". Yardım için 'yardim' yazın.";
+                    output.appendChild(res);
+                }
+
+                input.value = '';
+                output.scrollTop = output.scrollHeight;
+            }
+        });
+
+        // Sayfada herhangi bir yere tıklayınca inputa odaklan
+        document.addEventListener('click', () => input.focus());
+    </script>
+</body>
+</html>

@@ -16,7 +16,6 @@
             margin: 0;
         }
 
-        /* CRT Monitör Efekti */
         .crt::before {
             content: " "; display: block; position: absolute; top: 0; left: 0; bottom: 0; right: 0;
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
@@ -25,11 +24,8 @@
         }
 
         .glow { text-shadow: 0 0 10px rgba(255, 183, 197, 0.5); }
-        
         #output::-webkit-scrollbar { width: 5px; }
         #output::-webkit-scrollbar-thumb { background: #ffb7c533; border-radius: 10px; }
-        
-        #output { scroll-behavior: smooth; }
     </style>
 </head>
 <body class="crt p-4 md:p-12 min-h-screen flex items-center justify-center">
@@ -59,7 +55,6 @@
         const output = document.getElementById('output');
         const input = document.getElementById('input');
 
-        // Saat güncelleme
         function updateClock() {
             const now = new Date();
             document.getElementById('clock').innerText = now.toLocaleTimeString('tr-TR');
@@ -69,13 +64,14 @@
 
         const COMMANDS = {
             'yardim': "KOMUTLAR: [hakkinda, durum, ls, sudo_kiss, kahve, ping, hata_ayikla, sifre, temizle]",
-            'hakkinda': "SİSTEM SAHİBİ: Aleyna. <br>HEDEF: Sensin. <br>GÖREV: Birlikte çok mutlu olmak.",
-            'durum': "CPU: Sıcak (Seni görünce yükseliyor) | RAM: Anılarla dolu... | DUYGU: %100 Stabil.",
+            'hakkinda': "SİSTEM SAHİBİ: Aleyna. <br>HEDEF: Sensin. <br>GÖREV: 500k ve niceleri(mutluluğumuz).",
+            'durum': "CPU: Sıcak (Seni görünce yükseliyor) | RAM: Anılarla dolu... | DUYGU: %100 Mutlu.",
             'ls': "anilar.jpg  hayaller.pdf  gizli_not.txt  gelecek_planlari.exe",
-            'ping': "Pong! <br>Gecikme: 0ms (Kalbim seninle gerçek zamanlı senkronize.)",
-            'kahve': "☕ Kahve yükleniyor... <br>[SİSTEM]: Kahve hazır! Ama seninle içilince tadı daha güzel olur.",
+            'ping': "Pong! <br>Gecikme: 0ms (Kalbim senkronize seninkiyle.)",
+            'kahve': "☕ Kahve yükleniyor... <br>[SİSTEM]: Kahve hazır! Ama seninle, elinden içilince tadı daha güzel olur.",
             'hata_ayikla': "[DEBUG]: Hata aranıyor... <br>[OK]: Hiçbir hata bulunamadı. Sen mükemmelsin.",
-            'sifre': "ERİŞİM ENGELLENDİ. <br>İpucu: Senden 1 yaş büyük olduğum gün (3 Ekim 2006).",
+            'sifre': "ERİŞİM ENGELLENDİ. <br>İpucu: Senden 1 yaş büyük olduğum gün...",
+            '03102006': "ERİŞİM ONAYLANDI. <br>Hoş geldin bebişim Seni çoook seviyorum ❤️",
             'sudo_kiss': '<div class="space-y-4 py-2 text-center"><span class="text-pink-500 font-bold">[ADMIN]: Yetki verildi. Öpücük gönderiliyor...</span><div class="text-6xl animate-bounce">💖</div><div class="text-xs italic opacity-70">Hata: Fiziksel yakınlık algılanamadı. Lütfen yüz yüze tekrar deneyin.</div></div>'
         };
 
@@ -90,7 +86,7 @@
                 if (val === 'temizle') {
                     output.innerHTML = '';
                 } else if (val === '') {
-                    // Boş girişi yoksay
+                    // Pas geç
                 } else {
                     const res = document.createElement('div');
                     res.className = "pl-2 border-l-2 border-pink-500/20 my-2";
@@ -103,7 +99,6 @@
             }
         });
 
-        // Sayfada herhangi bir yere tıklayınca inputa odaklan
         document.addEventListener('click', () => input.focus());
     </script>
 </body>
